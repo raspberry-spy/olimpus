@@ -45,7 +45,7 @@ while True:
 
             print(start[0], start[1]) # Вывод координат в консоль
 
-    time.sleep(1)
+    time.sleep(0.6)
 
 
     video.write(frame)  # Сохранение кадра с нанесён
