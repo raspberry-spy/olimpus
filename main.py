@@ -10,18 +10,18 @@ print(f'Температура: {tello.get_temperature()} ℃')
 tello.streamon()  # Включение камеры дрона
 frame_read = tello.get_frame_read()  # Создание объекта чтения кадров
 height, width, _ = frame_read.frame.shape  # Получение разрешения камеры
-xcf = width // 2
+xcf = width // 2 # Координаты центра кадра
 ycf = height // 2
 video = cv2.VideoWriter('video_out_3.avi', cv2.VideoWriter_fourcc(*'XVID'), 15, (width, height))
 
-dist = 0.1833739461042
+dist = 0.1833739461042 # Кол-во см в одном пикселе кадра
 
 start = [0, 0]
 
 model = YOLO('car.pt')  # Инициализация модели машинного обучения
 
-tello.takeoff()  # Взлёт дрона
-tello.moveup(110)
+tello.takeoff() # Взлёт дрона
+tello.moveup(100) # Подъём дрона до 180 см
 
 while True:
     frame = frame_read.frame  # Получение кадра
@@ -39,14 +39,14 @@ while True:
         xc = (x1 + x2) // 2  # Вычисление центра координат обводки по оси X
         yc = (y1 + y2) // 2  # Вычисление центра координат обводки по оси Y
 
-        ycm = (xc - xcf) * dist
-        xcm = (yc - ycf) * dist
+        ycm = (xc - xcf) * dist # Вычисление координаты центра автомобиля-нарушителя относительно центра кадра в сантиметрах по оси X
+        xcm = (yc - ycf) * dist # Вычисление координаты центра автомобиля-нарушителя относительно центра кадра в сантиметрах по оси Y
 
-        start = start[0] + xcm, start[1] + ycm
+        start = start[0] + xcm, start[1] + ycm # Запись координат относительно точки взлёта
 
-        tello.go_xyz_speed(xcm, ycm, 0, 50)
+        tello.go_xyz_speed(xcm, ycm, 0, 50) # Выравнивание дрона по направлению к автоиобилю
 
-        print(ycm, xcm)
+        print(ycm, xcm) # Вывод координапт в консоль
 
 
     video.write(frame)  # Сохранение кадра с нанесён
