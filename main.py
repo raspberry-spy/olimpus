@@ -41,9 +41,9 @@ while True:
 
             start = start[0] + xcm, start[1] + ycm # Запись координат относительно точки взлёта
 
-            tello.go_xyz_speed(ycm, xcm, 0, 50) # Выравнивание дрона по направлению к автоиобилю
+            tello.go_xyz_speed(ycm, xcm, 0, 50) # Подлёт к автомобилю
 
-            print(xcm, ycm) # Вывод координат в консоль
+            print(start[0], start[1]) # Вывод координат в консоль
 
     time.sleep(1)
 
