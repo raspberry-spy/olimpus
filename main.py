@@ -22,9 +22,10 @@ start = [0, 0]
 model = YOLO('cars.pt')  # Инициализация модели машинного обучения
 
 tello.takeoff() # Взлёт дрона
-tello.moveup(100) # Подъём дрона до 180 см
+tello.move_up(100) # Подъём дрона до 180 см
 
 while True:
+    time.sleep(1)
     frame = frame_read.frame  # Получение кадра
     results = model(frame)  # Запись результатов работы модели
 
@@ -41,11 +42,9 @@ while True:
 
             start = start[0] + xcm, start[1] + ycm # Запись координат относительно точки взлёта
 
-            tello.go_xyz_speed(ycm, xcm, 0, 50) # Подлёт к автомобилю
+            tello.go_xyz_speed(round(ycm), round(xcm), 0, 50) # Подлёт к автомобилю
 
             print(start[0], start[1]) # Вывод координат в консоль
-
-    time.sleep(0.6)
 
 
     video.write(frame)  # Сохранение кадра с нанесён
@@ -54,7 +53,7 @@ while True:
     if key == 27:  # Выход на Escape
         break
 
-tello.go_xyz_speed(-start[1], -start[0], 0, 50)
+tello.go_xyz_speed(round(-start[1]), round(-start[0]), 0, 50)
 tello.land()  # Приземление дрона
 cv2.destroyAllWindows()  # Закрытие окна вывода видео
 video.release()  # Завершение записи
